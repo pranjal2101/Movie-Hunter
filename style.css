@@ -12,31 +12,32 @@ h1 {
 }
 
 #search-container {
-    margin: 20px auto;
+    margin: 10px auto;
     display: flex;
     justify-content: center;
 }
 
 #search-input {
-    padding: 10px;
-    width: 300px;
+    padding: 0px 10px;
+    width: 200px;
+    height: 40px;
     border: 1px solid #ccc;
     border-radius: 5px;
 }
 
 #search-button {
-    padding: 10px 20px;
+    padding: 10px 0px;
     margin-left: 10px;
-    background-color: #007BFF;
-    color: white;
+    /* background-color: #007BFF; */
+    color: black;
     border: none;
     border-radius: 5px;
     cursor: pointer;
 }
 
-#search-button:hover {
+/* #search-button:hover {
     background-color: #0056b3;
-}
+} */
 
 #results-container {
     margin: 20px auto;
@@ -244,4 +245,52 @@ footer {
 .register_btn:hover {
     background-image: linear-gradient(to left, #2667ff, #6c19ef);
     transition: all 0.25s ease-in-out;
+}
+
+#newRelease-container {
+    margin: 20px auto;
+    width: 90%;
+    max-width: 800px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+.movie-card {
+    background: white;
+    border-radius: 10px;
+    padding: 10px;
+    width: 200px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+.movie-card img {
+    width: 100%;
+    border-radius: 10px;
+}
+
+.movie-card h3 {
+    margin: 10px 0 5px;
+    font-size: 16px;
+}
+
+.movie-card p {
+    font-size: 14px;
+    color: #555;
+}
+
+.details-button {
+    padding: 8px 16px;
+    margin-top: 10px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.details-button:hover {
+    background-color: #0056b3;
 }

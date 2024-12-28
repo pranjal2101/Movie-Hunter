@@ -1,13 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Movie Hunter</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 </head>
+
 <body>
     <nav class="navbar navbar-expand-lg ">
         <div class="container-fluid">
@@ -43,28 +46,54 @@
                         <a class="nav-link" href="#">Hindi Series</a>
                     </li>
                 </ul>
-                <div class="d-flex">
-                    <button class="login_btn"><i class="fa-solid fa-right-to-bracket"></i> Login</button>
-                    <button class="register_btn">Register</button>
+                <div id="search-container">
+                    <input type="text" id="search-input" placeholder="Search for a movie or TV show...">
+                    <i class="fa-solid fa-magnifying-glass" id="search-button"></i>
+                    <!-- <button id="search-button">Search</button> -->
                 </div>
             </div>
         </div>
     </nav>
-    
+
+    <section>
+        <h1>New Relase</h1>
+        <div id="newRelease-container"></div>
+    </section>
+
     <section>
         <!-- <h1>Movie Hunter</h1> -->
-        <div id="search-container">
+        <!-- <div id="search-container">
             <input type="text" id="search-input" placeholder="Search for a movie or TV show...">
             <button id="search-button">Search</button>
-        </div>
+        </div> -->
         <div id="results-container"></div>
-    
+
     </section>
 
     <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-4">
+                    <h5>Prmovies - Watch Free Movies and TV Shows Online « prmovies</h5>
+                    <p>Prmovies Watch Latest Movies,TV Series Online for free and Download in HD on Prmovies
+                        website,Prmovies Bollywood,Prmovies app,Prmovies online.</p>
+                </div>
+                <div class="col-4">
+                    <h5>Prmovies - Watch Free Movies and TV Shows Online « prmovies</h5>
+                    <p>Prmovies Watch Latest Movies,TV Series Online for free and Download in HD on Prmovies
+                        website,Prmovies Bollywood,Prmovies app,Prmovies online.</p>
+                </div>
+                <div class="col-4">
+                    <h5>Prmovies - Watch Free Movies and TV Shows Online « prmovies</h5>
+                    <p>Prmovies Watch Latest Movies,TV Series Online for free and Download in HD on Prmovies
+                        website,Prmovies Bollywood,Prmovies app,Prmovies online.</p>
+                </div>
+            </div>
+        </div>
         <p>&copy; 2024 Movie Search App. All Rights Reserved.</p>
     </footer>
 
     <script src="index.js"></script>
 </body>
+
 </html>
