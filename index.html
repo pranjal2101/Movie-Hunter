@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Hunter</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg ">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#"><span class="logo">MH</span> Movie Hunter</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Hollywood</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Bollywood</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            Genre <i class="fa-solid fa-angle-down"></i>
+                        </a>
+                        <ul class="dropdown-menu border-0 shadow" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="#">Website Designing</a></li>
+                            <li><a class="dropdown-item" href="#">Website Development</a></li>
+                            <li><a class="dropdown-item" href="#">Search Engine Optimization</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">English Series</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Hindi Series</a>
+                    </li>
+                </ul>
+                <div class="d-flex">
+                    <button class="login_btn"><i class="fa-solid fa-right-to-bracket"></i> Login</button>
+                    <button class="register_btn">Register</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    <section>
+        <!-- <h1>Movie Hunter</h1> -->
+        <div id="search-container">
+            <input type="text" id="search-input" placeholder="Search for a movie or TV show...">
+            <button id="search-button">Search</button>
+        </div>
+        <div id="results-container"></div>
+    
+    </section>
+
+    <footer>
+        <p>&copy; 2024 Movie Search App. All Rights Reserved.</p>
+    </footer>
+
+    <script src="index.js"></script>
+</body>
+</html>

@@ -1,0 +1,247 @@
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    background-color: #f3f3f3;
+}
+
+h1 {
+    margin: 20px 0;
+}
+
+#search-container {
+    margin: 20px auto;
+    display: flex;
+    justify-content: center;
+}
+
+#search-input {
+    padding: 10px;
+    width: 300px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+#search-button {
+    padding: 10px 20px;
+    margin-left: 10px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#search-button:hover {
+    background-color: #0056b3;
+}
+
+#results-container {
+    margin: 20px auto;
+    width: 90%;
+    max-width: 800px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+.movie-card {
+    background: white;
+    border-radius: 10px;
+    padding: 10px;
+    width: 200px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.movie-card img {
+    width: 100%;
+    border-radius: 10px;
+}
+
+.movie-card h3 {
+    margin: 10px 0 5px;
+    font-size: 16px;
+}
+
+.movie-card p {
+    font-size: 14px;
+    color: #555;
+}
+
+/* Navbar Styles */
+/* .navHeader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: var(--body-color);
+    box-shadow: 0 2px 16px hsla(230, 75%, 32%, 0.15);
+    z-index: 1;
+  }
+  
+
+  #navbar {
+    height: 3.5rem;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
+
+#navbar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: flex-end;
+}
+
+#navbar li {
+    margin: 0 15px;
+}
+
+#navbar a {
+    color: rgb(0, 0, 0);
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: 500;
+    padding: 10px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+#navbar a:hover {
+    background-color: #007BFF;
+    color: white;
+} */
+
+/* Footer Styles */
+footer {
+    background-color: #333;
+    color: white;
+    padding: 10px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    #search-container {
+        flex-direction: column;
+    }
+
+    #search-input {
+        width: 80%;
+    }
+
+    .movie-card {
+        width: 45%;
+    }
+}
+
+@media (max-width: 480px) {
+    #navbar ul {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    #navbar li {
+        margin: 5px 0;
+    }
+
+    .movie-card {
+        width: 100%;
+    }
+}
+
+
+
+
+
+.navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    background-color: #ffffff;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 2px 16px hsla(230, 75%, 32%, 0.15);
+}
+
+.navbar.scrolled {
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.05);
+}
+
+.navbar.scrolled .nav-link:hover {
+    color: #0d6efd !important;
+}
+
+.nav-link {
+    font-family: 'Manrope', sans-serif;
+    font-weight: 700;
+    color: #3b3b3b !important;
+    margin: 0rem 0.5rem;
+}
+
+.nav-link:hover {
+    color: #0d6efd !important;
+}
+
+.dropdown-menu[data-bs-popper] {
+    margin-top: 1.4rem !important;
+}
+
+.navbar-brand {
+    font-family: 'Prata', serif;
+    font-weight: bolder;
+    font-size: 2rem;
+    color: black
+}
+
+.navbar-brand:hover {
+    color: black
+}
+
+.logo {
+    font-family: 'Kaushan Script', cursive;
+    font-size: 2rem;
+    padding: 0.5rem 0.5rem;
+    background-color: #2667ff;
+    color: white;
+    border-radius: 0.7rem;
+}
+
+.login_btn {
+    background-color: white;
+    color: #2667ff;
+    padding: 0.5rem 1.5rem;
+    font-size: 1.3rem;
+    border: none;
+    border-radius: 0.8rem;
+    font-family: 'Manrope', sans-serif;
+    margin-right: 0.5rem;
+}
+
+.login_btn:hover {
+    color: #6c19ef;
+    transition: all 0.25s ease-in-out;
+}
+
+.register_btn {
+    background-image: linear-gradient(to right, #2667ff, #6c19ef);
+    color: white;
+    padding: 0.5rem 1.5rem;
+    font-size: 1.3rem;
+    border: none;
+    border-radius: 0.8rem;
+    font-family: 'Manrope', sans-serif;
+}
+
+.register_btn:hover {
+    background-image: linear-gradient(to left, #2667ff, #6c19ef);
+    transition: all 0.25s ease-in-out;
+}
