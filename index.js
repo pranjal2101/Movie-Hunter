@@ -71,6 +71,7 @@ async function fetchMovieDetails(imdbID) {
             displayMovieDetails(data);
         } else {
             alert(data.Error);
+            
         }
     } catch (error) {
         console.error("Error:", error);
