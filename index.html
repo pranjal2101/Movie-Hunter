@@ -6,18 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Movie Hunter</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 </head>
 
 <body>
-    <nav class="navbar navbar-expand-lg ">
+    <nav class="navbar navbar-expand-lg">
         <div class="container-fluid">
             <a class="navbar-brand" href="#"><span class="logo">MH</span> Movie Hunter</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-                aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -29,15 +26,16 @@
                         <a class="nav-link" href="#">Bollywood</a>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
-                            aria-expanded="false">
-                            Genre <i class="fa-solid fa-angle-down"></i>
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" aria-expanded="false">
+                            Genre
                         </a>
-                        <ul class="dropdown-menu border-0 shadow" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="#">Website Designing</a></li>
-                            <li><a class="dropdown-item" href="#">Website Development</a></li>
-                            <li><a class="dropdown-item" href="#">Search Engine Optimization</a></li>
-                        </ul>
+                        <div class="dropdown-content">
+                            <a href="#">Action</a>
+                            <a href="#">Comedy</a>
+                            <a href="#">Drama</a>
+                            <a href="#">Thriller</a>
+                            <a href="#">Sci-Fi</a>
+                        </div>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">English Series</a>
@@ -49,50 +47,64 @@
                 <div id="search-container">
                     <input type="text" id="search-input" placeholder="Search for a movie or TV show...">
                     <i class="fa-solid fa-magnifying-glass" id="search-button"></i>
-                    <!-- <button id="search-button">Search</button> -->
                 </div>
             </div>
         </div>
     </nav>
 
-    <section>
-        <h1>New Relase</h1>
-        <div id="newRelease-container"></div>
-    </section>
+    <main>
+        <section>
+            <div id="newRelease-container"></div>
+        </section>
 
-    <section>
-        <!-- <h1>Movie Hunter</h1> -->
-        <!-- <div id="search-container">
-            <input type="text" id="search-input" placeholder="Search for a movie or TV show...">
-            <button id="search-button">Search</button>
-        </div> -->
-        <div id="results-container"></div>
+        <section>
+            <div id="results-container"></div>
+        </section>
+    </main>
 
-    </section>
-
-    <footer>
+    <footer class="footer">
         <div class="container">
             <div class="row">
-                <div class="col-4">
-                    <h5>Prmovies - Watch Free Movies and TV Shows Online « prmovies</h5>
-                    <p>Prmovies Watch Latest Movies,TV Series Online for free and Download in HD on Prmovies
-                        website,Prmovies Bollywood,Prmovies app,Prmovies online.</p>
+                <div class="footer-col">
+                    <h4>company</h4>
+                    <ul>
+                        <li><a href="#">about us</a></li>
+                        <li><a href="#">our services</a></li>
+                        <li><a href="#">privacy policy</a></li>
+                        <li><a href="#">affiliate program</a></li>
+                    </ul>
                 </div>
-                <div class="col-4">
-                    <h5>Prmovies - Watch Free Movies and TV Shows Online « prmovies</h5>
-                    <p>Prmovies Watch Latest Movies,TV Series Online for free and Download in HD on Prmovies
-                        website,Prmovies Bollywood,Prmovies app,Prmovies online.</p>
+                <div class="footer-col">
+                    <h4>get help</h4>
+                    <ul>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">shipping</a></li>
+                        <li><a href="#">returns</a></li>
+                        <li><a href="#">order status</a></li>
+                        <li><a href="#">payment options</a></li>
+                    </ul>
                 </div>
-                <div class="col-4">
-                    <h5>Prmovies - Watch Free Movies and TV Shows Online « prmovies</h5>
-                    <p>Prmovies Watch Latest Movies,TV Series Online for free and Download in HD on Prmovies
-                        website,Prmovies Bollywood,Prmovies app,Prmovies online.</p>
+                <div class="footer-col">
+                    <h4>online shop</h4>
+                    <ul>
+                        <li><a href="#">watch</a></li>
+                        <li><a href="#">bag</a></li>
+                        <li><a href="#">shoes</a></li>
+                        <li><a href="#">dress</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>follow us</h4>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
                 </div>
             </div>
         </div>
-        <p>&copy; 2024 Movie Search App. All Rights Reserved.</p>
     </footer>
-
     <script src="index.js"></script>
 </body>
 
