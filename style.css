@@ -44,6 +44,12 @@ h1 {
     cursor: pointer;
 }
 
+#search-button {
+    padding: 0.5rem;
+    align-self: center;
+    /* Ensures alignment in flex container */
+}
+
 
 /* #search-button:hover {
     background-color: #0056b3;
@@ -52,7 +58,6 @@ h1 {
 #results-container {
     margin: 20px auto;
     width: 90%;
-    /* max-width: 800px; */
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
@@ -60,26 +65,63 @@ h1 {
 }
 
 .movie-card {
-    background: white;
-    border-radius: 10px;
-    padding: 10px;
-    width: 200px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    background: linear-gradient(135deg, #ffffff, #f0f0f0);
+    border-radius: 12px;
+    overflow: hidden;
+    padding: 0;
+    width: 220px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.movie-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
 }
 
 .movie-card img {
     width: 100%;
-    border-radius: 10px;
+    height: 320px;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.movie-card:hover img {
+    transform: scale(1.05);
 }
 
 .movie-card h3 {
-    margin: 10px 0 5px;
-    font-size: 16px;
+    margin: 15px 10px 5px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    text-align: center;
 }
 
 .movie-card p {
     font-size: 14px;
-    color: #555;
+    color: #777;
+    margin: 0 10px 10px;
+    text-align: center;
+}
+
+.details-button {
+    display: block;
+    margin: 10px auto 15px;
+    padding: 10px 15px;
+    font-size: 14px;
+    font-weight: bold;
+    color: white;
+    background: linear-gradient(135deg, #007BFF, #0056D2);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    text-align: center;
+}
+
+.details-button:hover {
+    background: linear-gradient(135deg, #0056D2, #003CA6);
 }
 
 

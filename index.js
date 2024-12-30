@@ -202,4 +202,56 @@ function displayNewMovieDetails(movie) {
 }
 
 // Fetch new releases when page loads
-fetchNewReleases();
+// fetchNewReleases();
+
+const dropdownContent = document.querySelector(".dropdown-content");
+
+ async function fetchMoviesByGere(genre) {
+    debugger
+    const response = await fetch(`https://www.omdbapi.com/?apikey=9da7b9df&s=${genre}`);
+    const data = await response.json();
+
+    if(data.Response ="True"){
+        displayMovies(data.Search);
+    }else{
+        resultsContainer.innerHTML = `<p> no movies found for genre : ${genre}</p>`;
+    }
+ }
+
+ dropdownContent.addEventListener("click", (e)=>{
+    if(e.target.classList.contains("nav-button")){
+        // alert('hi');
+        debugger
+        const genre = e.target.getAttribute("data-genre");
+        fetchMoviesByGere(genre);
+    }
+ })
+
+ const bollywoodBtn = document.getElementById('bollywoodButton');
+
+ async function fetchBollywoodMovies() {
+    debugger
+    const response = await fetch(`https://www.omdbapi.com/?apikey=9da7b9df&s=indian`);
+    const data = await response.json();
+
+    if(data.Response ="True"){
+        const bollywoodMovies = [];
+        for(const movie of data.Search){
+            const detailsResponse = await fetch(`https://www.omdbapi.com/?apikey=9da7b9df&i=${movie.imdbID}`)
+            const movieDetails = await detailsResponse.json();
+            if(movieDetails.Country && movieDetails.Country.includes("India") && parseInt(movieDetails.Year) >= 2020){
+                bollywoodMovies.push(movieDetails);
+            }
+        }
+        displayMovies(bollywoodMovies);
+    }else{
+        resultsContainer.innerHTML = `<p>No Bollywood movies found.</p>`;
+    }
+    
+ }
+ document.querySelector('.bollywoodSection').addEventListener('click', (e) => {
+    debugger
+    if (e.target.classList.contains('bollywoodButton') && e.target.getAttribute('data-category') === 'Bollywood') {
+        fetchBollywoodMovies();
+    }
+});
