@@ -432,7 +432,9 @@ h1 {
     visibility: visible;
 }
 
-
+a:hover {
+    text-decoration: none !important;
+}
 /* -----------------------------Hover dropdown end---------------------------------------- */
 
 

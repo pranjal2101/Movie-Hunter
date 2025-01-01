@@ -3,8 +3,6 @@ const searchInput = document.getElementById("search-input");
 const resultsContainer = document.getElementById("results-container");
 const newReleaseContainer = document.getElementById("newRelease-container");
 const dropdownContent = document.querySelector(".dropdown-content");
-const bollywoodBtn = document.getElementById('bollywoodButton');
-const hollywoodBtn = document.getElementById('hollywoodButton');
 
 const OMDB_API_KEY = "9da7b9df";
 const TMDB_API_KEY = "e1e4c1f42f8c3b23a383b23e159a3890";
