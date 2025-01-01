@@ -6,8 +6,6 @@ const dropdownContent = document.querySelector(".dropdown-content");
 const bollywoodBtn = document.getElementById('bollywoodButton');
 const hollywoodBtn = document.getElementById('hollywoodButton');
 
-// const movieId = "1kYbJ0nmC9c5LNIF";    
-
 const OMDB_API_KEY = "9da7b9df";
 const TMDB_API_KEY = "e1e4c1f42f8c3b23a383b23e159a3890";
 
@@ -47,6 +45,7 @@ async function searchMovies(query) {
 function displayMovies(movies, isNewRelease = false) {
     const container = isNewRelease ? newReleaseContainer : resultsContainer;
     newReleaseContainer.innerHTML = "";
+    resultsContainer.innerHTML = "";
 
     movies.forEach((movie) => {
         const movieCard = document.createElement("div");
@@ -147,7 +146,6 @@ function displayMovieDetails(movie, isNewRelease = false) {
     });
 }
 
-
 async function fetchNewReleases() {
     const url = `https://api.themoviedb.org/3/movie/now_playing?api_key=${TMDB_API_KEY}&language=en-US&page=1`;
     try {
@@ -186,72 +184,67 @@ async function fetchMoviesByGere(genre) {
         resultsContainer.innerHTML = `<p> no movies found for genre : ${genre}</p>`;
     }
 }
-
-document.querySelector('.bollywoodSection').addEventListener('click', (e) => {
+async function fetchMovies(category) {
     debugger
-    if (e.target.classList.contains('bollywoodButton') && e.target.getAttribute('data-category') === 'Bollywood') {
-        fetchBollywoodMovies();
+    const baseUrl = `https://www.omdbapi.com/?apikey=${OMDB_API_KEY}&s=`;
+    let searchQuery = '';
+
+    switch (category) {
+        case 'Bollywood':
+            searchQuery = 'indian';
+            break;
+        case 'Hollywood':
+            searchQuery = 'movie';
+            break;
+        case 'English Series':
+            searchQuery = 'english';
+            break;
+        case 'Hindi Series':
+            searchQuery = 'hindi';
+            break;
+        default:
+            return;
     }
-});
 
-async function fetchBollywoodMovies() {
-    debugger
-    const response = await fetch(`https://www.omdbapi.com/?apikey=9da7b9df&s=indian`);
+    const response = await fetch(`${baseUrl}${searchQuery}`);
     const data = await response.json();
 
-    if (data.Response = "True") {
-        const bollywoodMovies = [];
+    if (data.Response === "True") {
+        let filteredMovies = [];
         for (const movie of data.Search) {
-            const detailsResponse = await fetch(`https://www.omdbapi.com/?apikey=9da7b9df&i=${movie.imdbID}`)
+            const detailsResponse = await fetch(`https://www.omdbapi.com/?apikey=${OMDB_API_KEY}&i=${movie.imdbID}`);
             const movieDetails = await detailsResponse.json();
-            if (movieDetails.Country && movieDetails.Country.includes("India") && parseInt(movieDetails.Year) >= 2020) {
-                bollywoodMovies.push(movieDetails);
+
+            if (category === 'Bollywood' && movieDetails.Country && movieDetails.Country.includes("India") && parseInt(movieDetails.Year) >= 2020) {
+                filteredMovies.push(movieDetails);
+            } else if (category === 'Hollywood' && movieDetails.Country && (movieDetails.Country.includes("United States") || movieDetails.Country.includes("United Kingdom") || movieDetails.Country.includes("Canada")) && parseInt(movieDetails.Year) >= 2000) {
+                filteredMovies.push(movieDetails);
+            } else if ((category === 'English Series' && movieDetails.Genre && movieDetails.Genre.includes("Series")) || (category === 'Hindi Series' && movieDetails.Genre && movieDetails.Genre.includes("Series"))) {
+                filteredMovies.push(movieDetails);
             }
         }
-        displayMovies(bollywoodMovies);
+        displayMovies(filteredMovies);
     } else {
-        resultsContainer.innerHTML = `<p>No Bollywood movies found.</p>`;
+        resultsContainer.innerHTML = `<p>No movies found for category: ${category}</p>`;
     }
-
 }
 
-document.querySelector('.hollywoodSection').addEventListener('click', (e) => {
+document.querySelector('.bollywoodSection').addEventListener('click', () => {
     debugger
-    if (e.target.classList.contains('hollywoodButton') && e.target.getAttribute('data-category') === 'Hollywood') {
-        fetchHollywoodMovies();
-    }
+    fetchMovies('Bollywood');
 });
 
-async function fetchHollywoodMovies() {
-    try {
-        const response = await fetch(`https://www.omdbapi.com/?apikey=9da7b9df&s=movie`);
-        const data = await response.json();
+document.querySelector('.hollywoodSection').addEventListener('click', () => {
+    debugger
+    fetchMovies('Hollywood');
+});
 
-        if (data.Response === "True") {
-            const hollywoodMovies = [];
+document.querySelector('.englishSeriesSection').addEventListener('click', () => {
+    debugger
+    fetchMovies('English Series');
+});
 
-            const movieDetailsPromises = data.Search.map(movie =>
-                fetch(`https://www.omdbapi.com/?apikey=9da7b9df&i=${movie.imdbID}`).then(res => res.json())
-            );
-            const movieDetailsArray = await Promise.all(movieDetailsPromises);
-
-            for (const movieDetails of movieDetailsArray) {
-                if (
-                    movieDetails.Country &&
-                    (movieDetails.Country.includes("United States") || movieDetails.Country.includes("United Kingdom")) || movieDetails.Country.includes("Canada") &&
-                    parseInt(movieDetails.Year) >= 2000
-                ) {
-                    hollywoodMovies.push(movieDetails);
-                }
-            }
-
-            displayMovies(hollywoodMovies);
-        } else {
-            resultsContainer.innerHTML = `<p>No Hollywood movies found.</p>`;
-        }
-    } catch (error) {
-        console.error("Error fetching Hollywood movies:", error);
-        resultsContainer.innerHTML = `<p>Something went wrong. Please try again later.</p>`;
-    }
-}
-
+document.querySelector('.hindiSeriesSection').addEventListener('click', () => {
+    debugger
+    fetchMovies('Hindi Series');
+});
