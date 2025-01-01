@@ -41,7 +41,8 @@ async function searchMovies(query) {
 }
 
 function displayMovies(movies, isNewRelease = false) {
-    const container = isNewRelease ? newReleaseContainer : resultsContainer;
+    movies = movies.sort((a, b) => b.Year - a.Year);
+    var container = isNewRelease ? newReleaseContainer : resultsContainer;
     newReleaseContainer.innerHTML = "";
     resultsContainer.innerHTML = "";
 
