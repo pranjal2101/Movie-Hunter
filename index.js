@@ -1,31 +1,40 @@
 const searchBtn = document.getElementById("search-button");
 const searchInput = document.getElementById("search-input");
 const resultsContainer = document.getElementById("results-container");
+const newReleaseContainer = document.getElementById("newRelease-container");
+const dropdownContent = document.querySelector(".dropdown-content");
+const bollywoodBtn = document.getElementById('bollywoodButton');
+const hollywoodBtn = document.getElementById('hollywoodButton');
 
-const API_KEY = "9da7b9df";
+// const movieId = "1kYbJ0nmC9c5LNIF";    
 
+const OMDB_API_KEY = "9da7b9df";
+const TMDB_API_KEY = "e1e4c1f42f8c3b23a383b23e159a3890";
 
 searchBtn.addEventListener("click", () => {
     const query = searchInput.value.trim();
     if (query) {
-        fetchMovies(query);
+        searchMovies(query);
     } else {
         alert("Please enter a movie or TV show name!");
     }
 });
 
+async function searchMovies(query) {
+    debugger
+    resultsContainer.innerHTML = "";
 
-async function fetchMovies(query) {
-
-    newReleaseContainer.innerHTML = "";
-
-    const url = `https://www.omdbapi.com/?s=${query}&apikey=${API_KEY}`;
+    const url = `https://www.omdbapi.com/?s=${query}&apikey=${OMDB_API_KEY}`;
     try {
         const res = await fetch(url);
         const data = await res.json();
 
         if (data.Response === "True") {
-            displayMovies(data.Search);
+            const filteredMovies = data.Search.filter(movie =>
+                movie.Year >= 1990 && movie.Type === "movie"
+            );
+            const sortedMovies = filteredMovies.sort((a, b) => b.Year - a.Year);
+            displayMovies(sortedMovies);
         } else {
             resultsContainer.innerHTML = `<p>${data.Error}</p>`;
         }
@@ -35,69 +44,51 @@ async function fetchMovies(query) {
     }
 }
 
-function displayMovies(movies) {
-    resultsContainer.innerHTML = "";
+function displayMovies(movies, isNewRelease = false) {
+    const container = isNewRelease ? newReleaseContainer : resultsContainer;
     newReleaseContainer.innerHTML = "";
+
     movies.forEach((movie) => {
         const movieCard = document.createElement("div");
         movieCard.classList.add("movie-card");
+
+        const poster = isNewRelease
+            ? `https://image.tmdb.org/t/p/w200${movie.poster_path}`
+            : movie.Poster !== "N/A" ? movie.Poster : "https://via.placeholder.com/200";
+        const title = isNewRelease ? movie.title : movie.Title;
+        const year = isNewRelease ? movie.release_date : movie.Year;
+
         movieCard.innerHTML = `
-            <img src="${movie.Poster !== "N/A" ? movie.Poster : "https://via.placeholder.com/200"}" alt="${movie.Title}">
-            <h3>${movie.Title}</h3>
-            <p>${movie.Year}</p>
-            <button class="details-button" data-id="${movie.imdbID}">View Details</button>
+            <img src="${poster}" alt="${title}">
+            <h3>${title}</h3>
+            <p>${year}</p>
+            <button class="details-button" data-id="${isNewRelease ? movie.id : movie.imdbID}">View Details</button>
         `;
-        resultsContainer.appendChild(movieCard);
+
+        container.appendChild(movieCard);
     });
 
     const detailButtons = document.querySelectorAll(".details-button");
     detailButtons.forEach((button) => {
         button.addEventListener("click", () => {
-            const imdbID = button.getAttribute("data-id");
-            fetchMovieDetails(imdbID);
+            const movieID = button.getAttribute("data-id");
+            fetchMovieDetails(movieID, isNewRelease);
         });
     });
 }
 
-function displayNewMovieDetails(movie) {
-    newReleaseContainer.innerHTML = `
-        <div class="movie-details container">
-            <div class="row">
-                
-                <div class="col-12 col-sm-12 col-md-4 col-lg-4">
-                    <img src="${movie.poster_path ? `https://image.tmdb.org/t/p/w300${movie.poster_path}` : "https://via.placeholder.com/300"}" alt="${movie.title}">
-                </div>
-                <div class="col-12 col-sm-12 col-md-8 col-lg-8">
-                    <h2>${movie.title}</h2>
-                    <p><strong>Year:</strong> ${movie.release_date}</p>
-                    <p><strong>Overview:</strong> ${movie.overview}</p>
-                    <p><strong>Genres:</strong> ${movie.genres.map(genre => genre.name).join(", ")}</p>
-                    
-                    <div>
-                        <div id="trailer-window">
-                            <iframe width="100%" height="315" src="https://www.youtube.com/embed/fqc364gMbxI?si=Qv0DI8LT7ZrpvKQl" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-                        </div>
-                        <button id="back-button">Back</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    `;
+async function fetchMovieDetails(movieID, isNewRelease = false) {
+    newReleaseContainer.innerHTML = "";
+    const url = isNewRelease
+    ? `https://api.themoviedb.org/3/movie/${movieID}?api_key=${TMDB_API_KEY}&language=en-US`
+    : `https://www.omdbapi.com/?i=${movieID}&apikey=${OMDB_API_KEY}`;
 
-    const backButton = document.getElementById("back-button");
-    backButton.addEventListener("click", () => {
-        fetchNewReleases();
-    });
-}
-
-async function fetchMovieDetails(imdbID) {
-    const url = `https://www.omdbapi.com/?i=${imdbID}&apikey=${API_KEY}`;
     try {
         const res = await fetch(url);
         const data = await res.json();
 
-        if (data.Response === "True") {
-            displayMovieDetails(data);
+        if (data) {
+            displayMovieDetails(data,isNewRelease);
         } else {
             alert(data.Error);
         }
@@ -107,21 +98,36 @@ async function fetchMovieDetails(imdbID) {
     }
 }
 
-// const movieId = "1kYbJ0nmC9c5LNIF";
-function displayMovieDetails(movie) {
-    resultsContainer.innerHTML = `
+function displayMovieDetails(movie, isNewRelease = false) {
+    const fields = [
+        { label: 'Year', value: isNewRelease ? movie.release_date : movie.Released },
+        { label: 'Genre', value: isNewRelease ? movie.genres.map(g => g.name).join(", ") : movie.Genre },
+        { label: 'Director', value: isNewRelease ? movie.director : movie.Director },
+        { label: 'Actors', value: isNewRelease ? movie.actors : movie.Actors },
+        { label: 'Plot', value: isNewRelease ? movie.overview : movie.Plot }
+    ];
+
+    const poster = isNewRelease
+        ? `https://image.tmdb.org/t/p/w300${movie.poster_path}`
+        : movie.Poster !== "N/A" ? movie.Poster : "https://via.placeholder.com/300";
+
+    let detailsHTML = `
         <div class="movie-details container">
-            <div class="row"> 
+            <div class="row">
                 <div class="col-12 col-sm-12 col-md-4 col-lg-4">
-                    <img src="${movie.Poster !== "N/A" ? movie.Poster : "https://via.placeholder.com/300"}" alt="${movie.Title}">
+                    <img src="${poster}" alt="${isNewRelease ? movie.title : movie.Title}">
                 </div>
                 <div class="col-12 col-sm-12 col-md-8 col-lg-8">
-                    <h2>${movie.Title}</h2>
-                    <p><strong>Year:</strong> ${movie.Released}</p>
-                    <p><strong>Genre:</strong> ${movie.Genre}</p>
-                    <p><strong>Director:</strong> ${movie.Director}</p>
-                    <p><strong>Actors:</strong> ${movie.Actors}</p>
-                    <p><strong>Plot:</strong> ${movie.Plot}</p>
+                    <h2>${isNewRelease ? movie.title : movie.Title}</h2>
+    `;
+
+    fields.forEach(field => {
+        if (field.value) {
+            detailsHTML += `<p><strong>${field.label}:</strong> ${field.value}</p>`;
+        }
+    });
+
+    detailsHTML += `
                     <div>
                         <div id="trailer-window">
                             <iframe width="100%" height="315" src="https://www.youtube.com/embed/fqc364gMbxI?si=Qv0DI8LT7ZrpvKQl" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -130,24 +136,17 @@ function displayMovieDetails(movie) {
                     </div>
                 </div>
             </div>
-
         </div>
     `;
 
+    resultsContainer.innerHTML = detailsHTML;
+
     const backButton = document.getElementById("back-button");
     backButton.addEventListener("click", () => {
-        const query = searchInput.value.trim();
-        fetchMovies(query);
+        fetchNewReleases();
     });
-
-    const playTrailerBtn = document.getElementById("play-trailer-btn");
-    const trailerWindow = document.getElementById("trailer-window");
-    trailerWindow.classList.toggle("active");
 }
 
-
-const newReleaseContainer = document.getElementById("newRelease-container");
-const TMDB_API_KEY = "e1e4c1f42f8c3b23a383b23e159a3890";
 
 async function fetchNewReleases() {
     const url = `https://api.themoviedb.org/3/movie/now_playing?api_key=${TMDB_API_KEY}&language=en-US&page=1`;
@@ -156,7 +155,7 @@ async function fetchNewReleases() {
         const data = await res.json();
 
         if (data.results.length > 0) {
-            displayNewReleases(data.results);
+            displayMovies(data.results, true); 
         } else {
             newReleaseContainer.innerHTML = `<p>No new releases found.</p>`;
         }
@@ -166,52 +165,15 @@ async function fetchNewReleases() {
     }
 }
 
-function displayNewReleases(movies) {
-    newReleaseContainer.innerHTML = "";
-    movies.forEach((movie) => {
-        const movieCard = document.createElement("div");
-        movieCard.classList.add("movie-card");
-        movieCard.innerHTML = `
-            <img src="${movie.poster_path ? `https://image.tmdb.org/t/p/w200${movie.poster_path}` : "https://via.placeholder.com/200"}" alt="${movie.title}">
-            <h3>${movie.title}</h3>
-            <p>${movie.release_date}</p>
-            <button class="details-button" data-id="${movie.id}">View Details</button>
-        `;
-        newReleaseContainer.appendChild(movieCard);
-    });
-
-    const detailButtons = document.querySelectorAll(".details-button");
-    detailButtons.forEach((button) => {
-        button.addEventListener("click", () => {
-            const movieID = button.getAttribute("data-id");
-            fetchNewMovieDetails(movieID);
-        });
-    });
-}
-
-async function fetchNewMovieDetails(movieID) {
-    newReleaseContainer.innerHTML = "";
-    const url = `https://api.themoviedb.org/3/movie/${movieID}?api_key=${TMDB_API_KEY}&language=en-US`;
-    try {
-        const res = await fetch(url);
-        const data = await res.json();
-
-        if (data) {
-            displayNewMovieDetails(data);
-        } else {
-            alert("No details found.");
-        }
-    } catch (error) {
-        console.error("Error:", error);
-        alert("Something went wrong. Please try again later.");
-    }
-}
-
-
-
 fetchNewReleases();
 
-const dropdownContent = document.querySelector(".dropdown-content");
+dropdownContent.addEventListener("click", (e) => {
+    if (e.target.classList.contains("nav-button")) {
+        debugger
+        const genre = e.target.getAttribute("data-genre");
+        fetchMoviesByGere(genre);
+    }
+})
 
 async function fetchMoviesByGere(genre) {
     debugger
@@ -225,15 +187,12 @@ async function fetchMoviesByGere(genre) {
     }
 }
 
-dropdownContent.addEventListener("click", (e) => {
-    if (e.target.classList.contains("nav-button")) {
-        debugger
-        const genre = e.target.getAttribute("data-genre");
-        fetchMoviesByGere(genre);
+document.querySelector('.bollywoodSection').addEventListener('click', (e) => {
+    debugger
+    if (e.target.classList.contains('bollywoodButton') && e.target.getAttribute('data-category') === 'Bollywood') {
+        fetchBollywoodMovies();
     }
-})
-
-const bollywoodBtn = document.getElementById('bollywoodButton');
+});
 
 async function fetchBollywoodMovies() {
     debugger
@@ -255,9 +214,44 @@ async function fetchBollywoodMovies() {
     }
 
 }
-document.querySelector('.bollywoodSection').addEventListener('click', (e) => {
+
+document.querySelector('.hollywoodSection').addEventListener('click', (e) => {
     debugger
-    if (e.target.classList.contains('bollywoodButton') && e.target.getAttribute('data-category') === 'Bollywood') {
-        fetchBollywoodMovies();
+    if (e.target.classList.contains('hollywoodButton') && e.target.getAttribute('data-category') === 'Hollywood') {
+        fetchHollywoodMovies();
     }
 });
+
+async function fetchHollywoodMovies() {
+    try {
+        const response = await fetch(`https://www.omdbapi.com/?apikey=9da7b9df&s=movie`);
+        const data = await response.json();
+
+        if (data.Response === "True") {
+            const hollywoodMovies = [];
+
+            const movieDetailsPromises = data.Search.map(movie =>
+                fetch(`https://www.omdbapi.com/?apikey=9da7b9df&i=${movie.imdbID}`).then(res => res.json())
+            );
+            const movieDetailsArray = await Promise.all(movieDetailsPromises);
+
+            for (const movieDetails of movieDetailsArray) {
+                if (
+                    movieDetails.Country &&
+                    (movieDetails.Country.includes("United States") || movieDetails.Country.includes("United Kingdom")) || movieDetails.Country.includes("Canada") &&
+                    parseInt(movieDetails.Year) >= 2000
+                ) {
+                    hollywoodMovies.push(movieDetails);
+                }
+            }
+
+            displayMovies(hollywoodMovies);
+        } else {
+            resultsContainer.innerHTML = `<p>No Hollywood movies found.</p>`;
+        }
+    } catch (error) {
+        console.error("Error fetching Hollywood movies:", error);
+        resultsContainer.innerHTML = `<p>Something went wrong. Please try again later.</p>`;
+    }
+}
+
