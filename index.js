@@ -50,9 +50,9 @@ function displayMovies(movies, isNewRelease = false) {
         const movieCard = document.createElement("div");
         movieCard.classList.add("movie-card");
 
-        const poster = isNewRelease
-            ? `https://image.tmdb.org/t/p/w200${movie.poster_path}`
-            : movie.Poster !== "N/A" ? movie.Poster : "https://via.placeholder.com/200";
+        const poster = isNewRelease ?
+            `https://image.tmdb.org/t/p/w200${movie.poster_path}` :
+            movie.Poster !== "N/A" ? movie.Poster : "https://via.placeholder.com/200";
         const title = isNewRelease ? movie.title : movie.Title;
         const year = isNewRelease ? movie.release_date : movie.Year;
 
@@ -77,16 +77,16 @@ function displayMovies(movies, isNewRelease = false) {
 
 async function fetchMovieDetails(movieID, isNewRelease = false) {
     newReleaseContainer.innerHTML = "";
-    const url = isNewRelease
-    ? `https://api.themoviedb.org/3/movie/${movieID}?api_key=${TMDB_API_KEY}&language=en-US`
-    : `https://www.omdbapi.com/?i=${movieID}&apikey=${OMDB_API_KEY}`;
+    const url = isNewRelease ?
+        `https://api.themoviedb.org/3/movie/${movieID}?api_key=${TMDB_API_KEY}&language=en-US` :
+        `https://www.omdbapi.com/?i=${movieID}&apikey=${OMDB_API_KEY}`;
 
     try {
         const res = await fetch(url);
         const data = await res.json();
 
         if (data) {
-            displayMovieDetails(data,isNewRelease);
+            displayMovieDetails(data, isNewRelease);
         } else {
             alert(data.Error);
         }
@@ -105,9 +105,9 @@ function displayMovieDetails(movie, isNewRelease = false) {
         { label: 'Plot', value: isNewRelease ? movie.overview : movie.Plot }
     ];
 
-    const poster = isNewRelease
-        ? `https://image.tmdb.org/t/p/w300${movie.poster_path}`
-        : movie.Poster !== "N/A" ? movie.Poster : "https://via.placeholder.com/300";
+    const poster = isNewRelease ?
+        `https://image.tmdb.org/t/p/w300${movie.poster_path}` :
+        movie.Poster !== "N/A" ? movie.Poster : "https://via.placeholder.com/300";
 
     let detailsHTML = `
         <div class="movie-details container">
@@ -152,7 +152,7 @@ async function fetchNewReleases() {
         const data = await res.json();
 
         if (data.results.length > 0) {
-            displayMovies(data.results, true); 
+            displayMovies(data.results, true);
         } else {
             newReleaseContainer.innerHTML = `<p>No new releases found.</p>`;
         }
@@ -162,7 +162,7 @@ async function fetchNewReleases() {
     }
 }
 
-fetchNewReleases();
+// fetchNewReleases();
 
 dropdownContent.addEventListener("click", (e) => {
     if (e.target.classList.contains("nav-button")) {
@@ -246,4 +246,60 @@ document.querySelector('.englishSeriesSection').addEventListener('click', () => 
 document.querySelector('.hindiSeriesSection').addEventListener('click', () => {
     debugger
     fetchMovies('Hindi Series');
+});
+
+const suggestionsContainer = document.getElementById('autocomplete-suggestions');
+searchInput.parentElement.appendChild(suggestionsContainer);
+
+searchInput.addEventListener('input', async() => {
+    debugger
+    const query = searchInput.value.trim();
+    if (query.length === 0) {
+        suggestionsContainer.innerHTML = '';
+        suggestionsContainer.style.display = 'none';
+        return;
+    }
+
+    const url = `https://www.omdbapi.com/?s=${query}&type=movie&apikey=${OMDB_API_KEY}`;
+    const response = await fetch(url);
+    const data = await response.json();
+
+    if (data.Response === 'True') {
+        suggestionsContainer.innerHTML = '';
+        suggestionsContainer.style.display = 'block';
+
+        data.Search.forEach(movie => {
+            const suggestionItem = document.createElement('div');
+            suggestionItem.classList.add('suggestion-item');
+
+            const poster = movie.Poster !== 'N/A' ? movie.Poster : 'placeholder-image-url.png';
+
+            suggestionItem.innerHTML = `
+                <img src="${poster}" alt="${movie.Title}">
+                <span>${movie.Title}</span>
+                <small>(${movie.Year})</small>
+            `;
+
+            suggestionItem.addEventListener('click', () => {
+                searchInput.value = movie.Title;
+                suggestionsContainer.innerHTML = '';
+                suggestionsContainer.style.display = 'none';
+                searchMovies(movie.Title);
+            });
+
+            suggestionsContainer.appendChild(suggestionItem);
+        });
+    } else {
+        suggestionsContainer.innerHTML = '<div class="suggestion-item">No results found</div>';
+        suggestionsContainer.style.display = 'block';
+    }
+});
+
+
+// Close suggestions when clicking outside
+document.addEventListener('click', (e) => {
+    if (!searchInput.contains(e.target) && !suggestionsContainer.contains(e.target)) {
+        suggestionsContainer.innerHTML = '';
+        suggestionsContainer.style.display = 'none';
+    }
 });
